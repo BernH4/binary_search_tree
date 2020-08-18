@@ -34,10 +34,20 @@ class Tree
     # knowing what direction i went before fills this code but i dont know how to work without it
     went_left = node_before > node
     if data == node.data
+      if !node.left.nil? && !node.right.nil?
+        replacement = delete(find_replacement(node))
+        if node == @root
+          @root = replacement
+        else
+          went_left ? node_before.left = replacement : node_before.right = replacement
+        end
+        replacement.left, replacement.right = node.left, node.right
       # true if node has only one child
-      if node.left.nil? ^ node.right.nil?
+      elsif node.left.nil? ^ node.right.nil?
         went_left ? node_before.left = node.left || node.right : node_before.right = node.left || node.right
-      else went_left ? node_before.left = nil : node_before.right = nil
+      else
+        went_left ? node_before.left = nil : node_before.right = nil
+        node
       end
     elsif data > node.data
       delete(data, node.right, node)
@@ -50,8 +60,7 @@ class Tree
     # go to the right side of the node and search for the next higher data
     node = node.right
     node = node.left until node.left.nil?
-    # TODO maybe remove this return node, probably will work anyway
-    node
+    node.data
   end
 
   def pretty_print(node = @root, prefix="", is_left = true)
@@ -71,7 +80,7 @@ myTree = Tree.new(data)
 # myTree.insert(2)
 # puts "------------"
 myTree.pretty_print
-# myTree.delete(40)
-myTree.delete(70)
+myTree.delete(50)
+#myTree.delete(70)
 puts '----------'
 myTree.pretty_print
