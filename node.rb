@@ -9,10 +9,11 @@ class Node
   end
 
   def <=>(other)
+    # Makes a node also comparable against an Integer
     value = other.class == Node ? other.data : other
-    self.data <=> value
+    data <=> value
   end
-  
+
   def to_s
     "Node: #{@data}"
   end

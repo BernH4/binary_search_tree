@@ -5,6 +5,7 @@ class Tree
   def initialize(data_arr)
     @data_arr = data_arr.uniq.sort
     @root = build_tree(@data_arr)
+    binding.pry
   end
 
   def build_tree(arr)
@@ -36,7 +37,7 @@ class Tree
     if data == node.data
       # Node has 2 childs
       if !node.left.nil? && !node.right.nil?
-        #find a replacement and delete it from the bottom
+        # find a replacement and delete it from the bottom
         replacement = delete(find_replacement(node))
         if node == @root
           @root = replacement
@@ -69,6 +70,7 @@ class Tree
   def find(data, node = @root)
     return "#{data} is not part of the tree yet!" if node.nil?
     return node if node == data
+
     node < data ? find(data, node.right) : find(data, node.left)
   end
 
@@ -82,12 +84,13 @@ class Tree
 
   def depth(node, curr_node = @root, depth = 0)
     return depth if curr_node == node
+
     depth += 1
-    depth = node < curr_node ? depth(node, curr_node.left, depth) : depth(node, curr_node.right, depth)
+    node < curr_node ? depth(node, curr_node.left, depth) : depth(node, curr_node.right, depth)
   end
 
   def balanced?
-    (height(@root.left) - height(@root.right)).between?(-1,1)
+    (height(@root.left) - height(@root.right)).between?(-1, 1)
   end
 
   def rebalance
@@ -133,29 +136,3 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? " " : "│ "}", true) if node.left
   end
 end
-
-#data = [1, 3, 4, 5, 11, 13, 15, 23, 67, 324, 6345]
-# data = [1,2,3,4,5,6,7,8,9]
-# data = [1,2,3]
-#data = %w(A B C D E F G H I J K)
-#p data.uniq.sort
-  # myTree = Tree.new(data)
-# myTree.pretty_print
-# myTree.insert(2)
-# puts "------------"
-  # myTree.pretty_print
-#myTree.delete(50)
-#myTree.delete(70)
-#puts '----------'
-#myTree.pretty_print
-#puts myTree.find("B")
-  # p myTree.level_order_iteration
-#p myTree.preorder
-#p myTree.inorder
-#p myTree.postorder
-#p myTree.height(myTree.find("F"))
-#p myTree.depth(myTree.find("A"))
-  # p myTree.balanced?
-  # myTree.rebalance
-  # p myTree.balanced?
-
